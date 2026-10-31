@@ -1,44 +1,46 @@
-open class Horse(val food: String, val location: String) {
-    fun makeNoise() {
+interface HorseInt{
+    val food: String
+    val location: String
+    fun makeNoise()
+    fun runspeed()
+}
+
+interface EagleInt {
+    val size: String
+    val wingL: Double
+    fun flightAltitude()
+    fun flightSpeed()
+}
+    
+class Horse(override val food: String, override val location: String) : HorseInt {
+    override fun makeNoise() {
         println("Лошадь издает звук")
     }
-    fun runspeed() {
+    override fun runspeed() {
         println("Лошадь бежит")
     }
 }
 
-open class Eagle(val size: String, val wingL: Double) {
-    fun flightAltitude() {
+class Eagle(override val size: String, override val wingL: Double) : EagleInt {
+    override fun flightAltitude() {
         println("Орел летит")
     }
-    fun flightSpeed() {
+    override fun flightSpeed() {
         println("Орел ускоряется")
     }
 }
 
-class Pegasus(food: String, location: String, size: String, wingL: Double) {
-    private val horse = Horse(food, location)
-    private val eagle = Eagle(size, wingL)
-
-    fun makeNoise() = horse.makeNoise()
-    fun runspeed() = horse.runspeed()
-
-    fun flightAltitude() = eagle.flightAltitude()
-    fun flightSpeed() = eagle.flightSpeed()
-
-    fun getFood(): String = horse.food
-    fun getLocation(): String = horse.location
-    fun getSize(): String = eagle.size
-    fun getWingL(): Double = eagle.wingL
-}
+class Pegasus(horse: HorseInt, eagle: EagleInt): HorseInt by horse, EagleInt by eagle
 
 fun main() {
-    val Pegas = Pegasus("Корм", "Поле", "Большой", 3.5)
+    val horse = Horse("Корм", "Поле")
+    val eagle = Eagle("Большой", 3.5)
+    val Pegas = Pegasus(horse, eagle)
 
-    println("Еда: " + Pegas.getFood())
-    println("Локация: " + Pegas.getLocation())
-    println("Размер: " + Pegas.getSize())
-    println("Размах крыльев: " + Pegas.getWingL())
+    println("Еда: " + Pegas.food)
+    println("Локация: " + Pegas.location)
+    println("Размер: " + Pegas.size)
+    println("Размах крыльев: " + Pegas.wingL)
 
     Pegas.makeNoise()
     Pegas.runspeed()
